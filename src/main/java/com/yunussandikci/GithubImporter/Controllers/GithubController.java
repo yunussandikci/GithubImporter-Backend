@@ -29,18 +29,6 @@ public class GithubController {
     @Autowired
     private LicenseRepository licenseRepository;
 
-
-
-    RestTemplate restTemplate = new RestTemplate();
-
-    @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/search/{username}")
-    public List<Project> searchUserRepositories(@PathVariable("username") String username){
-        ResponseEntity<List<Project>> response = restTemplate.exchange("https://api.github.com/users/" + username + "/repos",HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
-        List<Project> repositories = response.getBody();
-        return repositories;
-    }
-
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/import/{username}")
     public ResponseEntity importUserRepositories(@PathVariable("username") String username){
