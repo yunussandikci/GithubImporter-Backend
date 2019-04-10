@@ -2,17 +2,16 @@ package com.yunussandikci.GithubImporter.Controllers;
 
 
 import com.yunussandikci.GithubImporter.Models.GithubAPI.Project;
+import com.yunussandikci.GithubImporter.Models.Response.ImportUserRepositoriesResponse;
 import com.yunussandikci.GithubImporter.Repositories.LicenseRepository;
 import com.yunussandikci.GithubImporter.Repositories.OwnerRepository;
 import com.yunussandikci.GithubImporter.Repositories.ProjectRepository;
+import com.yunussandikci.GithubImporter.Service.GithubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -22,14 +21,19 @@ import java.util.List;
 public class GithubController {
 
     @Autowired
+    private GithubService githubService;
+    @Autowired
     private ProjectRepository projectRepository;
     @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
     private LicenseRepository licenseRepository;
 
+
+
     RestTemplate restTemplate = new RestTemplate();
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/search/{username}")
     public List<Project> searchUserRepositories(@PathVariable("username") String username){
         ResponseEntity<List<Project>> response = restTemplate.exchange("https://api.github.com/users/" + username + "/repos",HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
@@ -37,19 +41,22 @@ public class GithubController {
         return repositories;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/import/{username}")
-    public ResponseEntity<String> importUserRepositories(@PathVariable("username") String username){
-        ResponseEntity<List<Project>> response = restTemplate.exchange("https://api.github.com/users/" + username + "/repos",HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
-        List<Project> repositoryResponseBody = response.getBody();
-        for (Project item :repositoryResponseBody){
-            if (item.getLicense() != null) {
-                licenseRepository.save(item.getLicense());
+    public ResponseEntity importUserRepositories(@PathVariable("username") String username){
+        try{
+            List<Project> repositoryResponseBody = githubService.fetchUserRepositories(username);
+            for (Project item :repositoryResponseBody){
+                if (item.getLicense() != null) {
+                    licenseRepository.save(item.getLicense());
+                }
+                ownerRepository.save(item.getOwner());
+                projectRepository.save(item);
             }
-            ownerRepository.save(item.getOwner());
-            projectRepository.save(item);
+            return ResponseEntity.ok(new ImportUserRepositoriesResponse(repositoryResponseBody.size()-1,null));
+        }catch (Exception e){
+            return ResponseEntity.status(400).body(new ImportUserRepositoriesResponse(null,"An error happened."));
         }
-
-        return ResponseEntity.ok("");
     }
 
 }
