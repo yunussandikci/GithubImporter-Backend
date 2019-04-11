@@ -1,5 +1,6 @@
 package com.yunussandikci.GithubImporter.Service;
 
+import com.yunussandikci.GithubImporter.Models.GithubAPI.GithubResponse;
 import com.yunussandikci.GithubImporter.Models.GithubAPI.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -9,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class GithubService {
@@ -21,9 +24,19 @@ public class GithubService {
         restTemplate = restTemplateBuilder.build();
     }
 
+    //TODO:Check for same items
+    //TODO:Use multi-threading for every request
     public List<Project> fetchUserRepositories(String username){
-        ResponseEntity<List<Project>> response = restTemplate.exchange("https://api.github.com/users/" + username + "/repos", HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
-        return response.getBody();
+        List<Project> projects = new ArrayList<>();
+        String currentPage = "https://api.github.com/users/" + username + "/repos?per_page=10&page=1";
+        GithubResponse githubResponse;
+        do{
+            ResponseEntity<List<Project>> response = restTemplate.exchange(currentPage, HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
+            githubResponse = new GithubResponse(response);
+            currentPage = githubResponse.getLinks().getNext();
+            projects.addAll((List<Project>)githubResponse.getBody());
+        }while (githubResponse.getLinks() != null && githubResponse.getLinks().getNext() != null);
+        return projects;
     }
 
 }

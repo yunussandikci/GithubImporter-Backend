@@ -29,6 +29,7 @@ public class GithubController {
     @Autowired
     private LicenseRepository licenseRepository;
 
+    //
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/import/{username}")
     public ResponseEntity importUserRepositories(@PathVariable("username") String username){
@@ -41,7 +42,7 @@ public class GithubController {
                 ownerRepository.save(item.getOwner());
                 projectRepository.save(item);
             }
-            return ResponseEntity.ok(new ImportUserRepositoriesResponse(repositoryResponseBody.size()-1,null));
+            return ResponseEntity.ok(new ImportUserRepositoriesResponse(repositoryResponseBody.size(),null));
         }catch (Exception e){
             return ResponseEntity.status(400).body(new ImportUserRepositoriesResponse(null,"An error happened."));
         }
