@@ -29,7 +29,7 @@ public class GithubController {
     @Autowired
     private LicenseRepository licenseRepository;
 
-    //
+
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/import/{username}")
     public ResponseEntity importUserRepositories(@PathVariable("username") String username){

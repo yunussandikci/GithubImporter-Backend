@@ -12,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class GithubService {
@@ -24,11 +23,10 @@ public class GithubService {
         restTemplate = restTemplateBuilder.build();
     }
 
-    //TODO:Check for same items
-    //TODO:Use multi-threading for every request
+    //TODO:Use multi-threading for every request maybe
     public List<Project> fetchUserRepositories(String username){
         List<Project> projects = new ArrayList<>();
-        String currentPage = "https://api.github.com/users/" + username + "/repos?per_page=10&page=1";
+        String currentPage = "https://api.github.com/users/" + username + "/repos?per_page=100&page=1";
         GithubResponse githubResponse;
         do{
             ResponseEntity<List<Project>> response = restTemplate.exchange(currentPage, HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
