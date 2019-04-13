@@ -1,6 +1,6 @@
 package com.yunussandikci.GithubImporter.Repositories;
 
-import com.yunussandikci.GithubImporter.Models.GithubAPI.Project;
+import com.yunussandikci.GithubImporter.Models.Project;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

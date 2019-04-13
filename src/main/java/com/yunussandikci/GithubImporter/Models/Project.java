@@ -1,4 +1,4 @@
-package com.yunussandikci.GithubImporter.Models.GithubAPI;
+package com.yunussandikci.GithubImporter.Models;
 
 import javax.persistence.*;
 import java.util.Date;

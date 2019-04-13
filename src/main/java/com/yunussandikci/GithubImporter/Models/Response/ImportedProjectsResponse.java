@@ -1,7 +1,7 @@
 package com.yunussandikci.GithubImporter.Models.Response;
 
-import com.yunussandikci.GithubImporter.Models.GithubAPI.Owner;
-import com.yunussandikci.GithubImporter.Models.GithubAPI.Project;
+import com.yunussandikci.GithubImporter.Models.Owner;
+import com.yunussandikci.GithubImporter.Models.Project;
 
 import java.util.List;
 

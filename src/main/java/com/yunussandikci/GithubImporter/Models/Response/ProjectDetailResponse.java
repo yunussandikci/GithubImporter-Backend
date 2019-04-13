@@ -1,9 +1,6 @@
 package com.yunussandikci.GithubImporter.Models.Response;
 
-import com.yunussandikci.GithubImporter.Models.GithubAPI.Owner;
-import com.yunussandikci.GithubImporter.Models.GithubAPI.Project;
-
-import java.util.List;
+import com.yunussandikci.GithubImporter.Models.Project;
 
 public class ProjectDetailResponse extends BaseResponse {
 

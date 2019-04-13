@@ -1,7 +1,7 @@
 package com.yunussandikci.GithubImporter.Controllers;
 
-import com.yunussandikci.GithubImporter.Models.GithubAPI.Owner;
-import com.yunussandikci.GithubImporter.Models.GithubAPI.Project;
+import com.yunussandikci.GithubImporter.Models.Owner;
+import com.yunussandikci.GithubImporter.Models.Project;
 import com.yunussandikci.GithubImporter.Models.Response.ImportedProjectsResponse;
 import com.yunussandikci.GithubImporter.Models.Response.ProjectDetailResponse;
 import com.yunussandikci.GithubImporter.Repositories.OwnerRepository;
