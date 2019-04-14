@@ -50,6 +50,8 @@ public class GithubService {
         ResponseEntity<List<Project>> firstPage = restTemplate.exchange((buildRepositoryPageUrl(username, perPage,1)), HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
         GithubResponse githubResponse = new GithubResponse(firstPage);
         projects.addAll((List<Project>)githubResponse.getBody());
+        if(githubResponse.getLinks().getLast() == null)
+            return projects;
         Integer lastPage = Integer.parseInt(githubResponse.getLinks().getLast().split("=")[2]);
 
         for(int i=2;i<=lastPage;i++){
