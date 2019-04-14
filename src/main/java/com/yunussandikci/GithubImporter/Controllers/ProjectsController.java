@@ -23,9 +23,9 @@ public class ProjectsController {
     private OwnerRepository ownerRepository;
     
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/search/{keyword}")
-    public ResponseEntity ImportedProjects(@PathVariable("keyword") String keyword) {
-        Owner owner = ownerRepository.findOwnerByUsername(keyword);
+    @GetMapping("/search/{username}")
+    public ResponseEntity ImportedProjects(@PathVariable("username") String username) {
+        Owner owner = ownerRepository.findOwnerByUsername(username);
         if(owner == null){
             return ResponseEntity.status(404).body(new ImportedProjectsResponse(null,null,"User Not Found :("));
         }else{
