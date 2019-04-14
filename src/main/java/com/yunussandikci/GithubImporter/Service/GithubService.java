@@ -14,16 +14,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 public class GithubService {
 
     private RestTemplate restTemplate;
 
-
-    @Autowired
-    public GithubService(RestTemplateBuilder restTemplateBuilder) {
-        restTemplate = restTemplateBuilder.build();
+    public GithubService() {
+        restTemplate = new RestTemplate();
     }
 
     public class fetchUserRepositoriesRunnable implements Runnable{
