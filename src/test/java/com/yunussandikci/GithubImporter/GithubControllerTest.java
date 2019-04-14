@@ -12,6 +12,7 @@ import com.yunussandikci.GithubImporter.Repositories.LicenseRepository;
 import com.yunussandikci.GithubImporter.Repositories.OwnerRepository;
 import com.yunussandikci.GithubImporter.Repositories.ProjectRepository;
 import com.yunussandikci.GithubImporter.Service.GithubService;
+import javassist.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +31,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -80,6 +80,11 @@ public class GithubControllerTest {
         verify(githubService).fetchUserRepositories(testOwner.getLogin());
         assertThat(responseEntity.getStatusCodeValue(),equalTo(200));
         assertThat(response.getImportedRepositoryCount(),equalTo(projectList.size()));
+
+        when(githubService.fetchUserRepositories("notFoundUser")).thenThrow(RuntimeException.class);
+        ResponseEntity notFoundEntity = githubController.importUserRepositories("notFoundUser");
+        verify(githubService).fetchUserRepositories("notFoundUser");
+        assertThat(notFoundEntity.getStatusCodeValue(),equalTo(400));
     }
 
 }

@@ -64,12 +64,20 @@ public class GithubServiceTest {
 
         HttpHeaders headersSecond = new HttpHeaders();
         headersSecond.add("Link", "<https://api.github.com/user/testuser/repos?per_page=100&page=3>; rel=\"next\", <https://api.github.com/user/testuser/repos?per_page=100&page=3>; rel=\"last\"");
-        ResponseEntity<List<Project>>  secondPageEntity = new ResponseEntity<>(secondPageProjectList,headersSecond, HttpStatus.OK);
+        ResponseEntity<List<Project>> secondPageEntity = new ResponseEntity<>(secondPageProjectList,headersSecond, HttpStatus.OK);
+
         HttpHeaders headersThird = new HttpHeaders();
-        ResponseEntity<List<Project>>  thirdPageEntity = new ResponseEntity<>(thirdPageProjectList,headersThird, HttpStatus.OK);
+        ResponseEntity<List<Project>> thirdPageEntity = new ResponseEntity<>(thirdPageProjectList,headersThird, HttpStatus.OK);
+
+        HttpHeaders headersOnePage = new HttpHeaders();
+        ResponseEntity<List<Project>> onlyOnePageEntity = new ResponseEntity<>(firstPageProjectList,headersOnePage, HttpStatus.OK);
+
+
         when(restTemplate.exchange(eq(GithubHelper.buildRepositoryPageUrl("testuser",100,1)),ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any(),any(ParameterizedTypeReference.class))).thenReturn(firstPageEntity);
         when(restTemplate.exchange(eq(GithubHelper.buildRepositoryPageUrl("testuser",100,2)),ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any(),any(ParameterizedTypeReference.class))).thenReturn(secondPageEntity);
         when(restTemplate.exchange(eq(GithubHelper.buildRepositoryPageUrl("testuser",100,3)),ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any(),any(ParameterizedTypeReference.class))).thenReturn(thirdPageEntity);
+        when(restTemplate.exchange(eq(GithubHelper.buildRepositoryPageUrl("testuser2",100,1)),ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any(),any(ParameterizedTypeReference.class))).thenReturn(onlyOnePageEntity);
+
     }
 
     @Test
@@ -83,6 +91,10 @@ public class GithubServiceTest {
         allPageProjects.addAll(secondPageProjectList);
         allPageProjects.addAll(thirdPageProjectList);
         assertThat(projectList,equalTo(allPageProjects));
+
+        List<Project> onePageList = githubService.fetchUserRepositories("testuser2");
+        verify(restTemplate).exchange(eq(GithubHelper.buildRepositoryPageUrl("testuser2",100,1)),ArgumentMatchers.any(HttpMethod.class), ArgumentMatchers.any(),any(ParameterizedTypeReference.class));
+        assertThat(onePageList,equalTo(firstPageProjectList));
     }
 }
 
