@@ -23,6 +23,10 @@ public class GithubService {
         restTemplate = new RestTemplate();
     }
 
+    /**
+     * This Runnable is used as page fetcher for fetchUserRepositories function.
+     * It fetches a repository page than add this fetched page repositories into projects object.
+     */
     public class fetchUserRepositoriesRunnable implements Runnable{
         private String pageUrl;
         private List<Project> projects;
@@ -39,6 +43,14 @@ public class GithubService {
         }
     }
 
+    /**
+     * This function used to fetch user repositories from GitHub API.
+     * Firstly, it fetches the first page than calculates how many pages remain.
+     * Secondly, it splits all remaining pages into Threads and waits until all Threads finish.
+     * Finally, it returns all repositories any specific user has.
+     * @param username
+     * @return List of fetched projects
+     */
     public List<Project> fetchUserRepositories(String username){
         Integer perPage = 100;
         List<Project> projects = new ArrayList<>();

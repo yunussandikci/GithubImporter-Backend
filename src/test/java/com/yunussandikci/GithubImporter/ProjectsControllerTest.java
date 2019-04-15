@@ -1,6 +1,5 @@
 package com.yunussandikci.GithubImporter;
 
-import com.yunussandikci.GithubImporter.Controllers.GithubController;
 import com.yunussandikci.GithubImporter.Controllers.ProjectsController;
 import com.yunussandikci.GithubImporter.Models.License;
 import com.yunussandikci.GithubImporter.Models.Owner;
@@ -15,7 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.internal.matchers.NotNull;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,11 +22,9 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
