@@ -38,7 +38,7 @@ public class GithubService {
 
         @Override
         public void run() {
-            ResponseEntity<List<Project>> response = restTemplate.exchange(pageUrl, HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
+            ResponseEntity<List<Project>> response = restTemplate.exchange(pageUrl, HttpMethod.GET,null, new ParameterizedTypeReference<List<Project>>() {});
             projects.addAll(response.getBody());
         }
     }
@@ -56,7 +56,7 @@ public class GithubService {
         List<Project> projects = new ArrayList<>();
         List<Thread> threads = new ArrayList<>();
 
-        ResponseEntity<List<Project>> firstPage = restTemplate.exchange((buildRepositoryPageUrl(username, perPage,1)), HttpMethod.GET,null, new ParameterizedTypeReference<>() {});
+        ResponseEntity<List<Project>> firstPage = restTemplate.exchange((buildRepositoryPageUrl(username, perPage,1)), HttpMethod.GET,null, new ParameterizedTypeReference<List<Project>>() {});
         GithubResponse githubResponse = new GithubResponse(firstPage);
         projects.addAll((List<Project>)githubResponse.getBody());
         if(githubResponse.getLinks().getLast() == null)
