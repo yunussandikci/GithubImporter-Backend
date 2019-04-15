@@ -37,7 +37,7 @@ public class GithubController {
 
     @ApiOperation(value = "Import user repositories as a project into database.", response = ImportUserRepositoriesResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully imported projects."), @ApiResponse(code = 400, message = "The repositories related with username is not found in github or any error happened.")})
-    @CrossOrigin(origins = "${CROSS_ORIGIN}")
+    @CrossOrigin(origins = {"http://${CROSS_ORIGIN}", "https://${CROSS_ORIGIN}"})
     @GetMapping("/import/{username}")
     public ResponseEntity importUserRepositories(@PathVariable("username") String username) {
         try {

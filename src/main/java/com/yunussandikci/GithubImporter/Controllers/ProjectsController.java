@@ -29,7 +29,7 @@ public class ProjectsController {
 
     @ApiOperation(value = "View a list of imported projects of a user", response = ImportedProjectsResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved list."), @ApiResponse(code = 404, message = "The projects related with username is not found.")})
-    @CrossOrigin(origins = "${CROSS_ORIGIN}")
+    @CrossOrigin(origins = {"http://${CROSS_ORIGIN}", "https://${CROSS_ORIGIN}"})
     @GetMapping("/search/{username}")
     public ResponseEntity ImportedProjects(@PathVariable("username") String username) {
         Owner owner = ownerRepository.findOwnerByUsername(username);
@@ -43,7 +43,7 @@ public class ProjectsController {
 
     @ApiOperation(value = "View one imported project details.", response = ProjectDetailResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully retrieved project."), @ApiResponse(code = 404, message = "The imported project with id is not found.")})
-    @CrossOrigin(origins = "${CROSS_ORIGIN}")
+    @CrossOrigin(origins = {"http://${CROSS_ORIGIN}", "https://${CROSS_ORIGIN}"})
     @GetMapping("/{id}")
     public ResponseEntity ProjectDetail(@PathVariable("id") Integer id) {
         try {
